@@ -1,27 +1,23 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
-import { NATS_SERVICE } from 'src/config';
+import { Forecast } from 'src/model/forecast.model';
+import {
+  FORECAST_REPOSITORY,
+  ForecastRepository,
+} from 'src/storage/interface/forecast.repository.interface';
 
 @Injectable()
 export class ForecastAccessService {
-  private readonly logger = new Logger('Forecast access service');
-
-  constructor(@Inject(NATS_SERVICE) private readonly client: ClientProxy) {
-    //   super();
-  }
-
-  //   async onModuleInit() {
-  //     await this.$connect();
-  //     this.logger.log('Database connected');
-  //   }
+  constructor(
+    @Inject(FORECAST_REPOSITORY)
+    private readonly repository: ForecastRepository,
+  ) {}
 
   async getForecast() {
-    return 'Forecast';
+    const forecast = await this.repository.getForecast();
+    return forecast;
   }
 
-  async saveForecast(forecast: any) {
-    // TODO: save forecast
-    console.log('Forecast to be saved');
-    this.client.emit('internal.forecast.updated', forecast);
+  async saveForecast(forecast: Forecast) {
+    await this.repository.saveForecast(forecast);
   }
 }
