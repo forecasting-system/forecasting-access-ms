@@ -4,6 +4,7 @@ import { ForecastAccessController } from './forecast-access.controller';
 import { NatsModule } from 'src/transports/nats.module';
 import { SqlForecastRepository } from 'src/storage/sql-forecast.repository';
 import { FORECAST_REPOSITORY } from 'src/storage/interface/forecast.repository.interface';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   controllers: [ForecastAccessController],
@@ -14,6 +15,6 @@ import { FORECAST_REPOSITORY } from 'src/storage/interface/forecast.repository.i
       useClass: SqlForecastRepository,
     },
   ],
-  imports: [NatsModule],
+  imports: [NatsModule, CacheModule.register()],
 })
 export class ForecastAccessModule {}
