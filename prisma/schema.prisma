@@ -20,6 +20,8 @@ model Forecast {
   created_at DateTime
 
   points Point[]
+
+  @@index([created_at])
 }
 
 model Point {

@@ -27,7 +27,7 @@ export class ForecastAccessService {
       const cachedForecastJson = JSON.parse(cachedForecast as string);
       const forecast = Forecast.fromJSON(cachedForecastJson);
 
-      this.logger.log('Forecast from cache');
+      this.logger.log('Forecast retrievedfrom cache');
       return forecast;
     }
 
@@ -37,7 +37,7 @@ export class ForecastAccessService {
       JSON.stringify(forecast),
     );
 
-    this.logger.log('Forecast from database');
+    this.logger.log('Forecast retrieved from database');
     return forecast;
   }
 

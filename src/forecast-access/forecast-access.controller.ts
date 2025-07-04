@@ -22,7 +22,6 @@ export class ForecastAccessController {
   @MessagePattern('getForecast')
   async getForecast() {
     const forecast = await this.forecastAccessService.getForecast();
-
     return forecast;
   }
 
@@ -30,11 +29,12 @@ export class ForecastAccessController {
   async handleForecastGenerated(
     @Payload() forecastDto: ForecastDto,
   ): Promise<void> {
+    this.logger.log('Triggers on internal.forecast.generated');
     const { points, model_version, id, created_at } = forecastDto;
     const forecast = new Forecast(points, model_version, id, created_at);
     await this.forecastAccessService.saveForecast(forecast);
 
     this.client.emit('internal.forecast.updated', forecast);
-    this.logger.log('Forecast updated message emitted');
+    this.logger.log('Forecast updated emitted');
   }
 }
